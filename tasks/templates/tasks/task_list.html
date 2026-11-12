@@ -1,0 +1,32 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+<a href="{% url 'task_create' %}" class="btn btn-add">+ Add New Task</a>
+<div style="margin-top: 20px;">
+    {% for task in tasks %}
+        <div class="task-item">
+            <!-- Task Details -->
+            <div>
+                <strong class="{% if task.completed %}completed{% endif %}">{{ task.title }}</strong>
+                {% if task.description %}<p style="margin: 5px 0;">{{ task.description }}</p>{% endif %}
+                
+                <div style="font-size: 13px; color: #666; margin-top: 5px;">
+                    <span>📝 Recorded on: {{ task.created_at|date:"M d, Y @ h:i A" }}</span>
+                    {% if task.due_date %}
+                        <br>
+                        <span>⏰ Scheduled for: {{ task.due_date|date:"M d, Y @ h:i A" }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Action Buttons (Now positioned below content) -->
+            <div class="task-actions">
+                <a href="{% url 'task_update' task.pk %}" class="btn btn-edit">Edit</a>
+                <a href="{% url 'task_delete' task.pk %}" class="btn btn-delete">Delete</a>
+            </div>
+        </div>
+    {% empty %}
+        <p>No tasks found. Add one above!</p>
+    {% endfor %}
+</div>
+{% endblock %}

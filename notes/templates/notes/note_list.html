@@ -1,0 +1,22 @@
+<div style="display: flex; justify-content: space-between;">
+    <h2>Welcome, {{ user.username }}! 📝</h2>
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Log Out</button>
+    </form>
+</div>
+
+<a href="{% url 'note_create' %}">+ Create New Note</a>
+<hr>
+
+{% for note in notes %}
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        <h3>{{ note.title }}</h3>
+        <p>{{ note.content }}</p>
+        <small>Created: {{ note.created_at|date:"M d, Y @ h:i A" }}</small>
+        <br><br>
+        <a href="{% url 'note_delete' note.pk %}">Delete</a>
+    </div>
+{% empty %}
+    <p>You don't have any notes yet. Create one!</p>
+{% endfor %}
